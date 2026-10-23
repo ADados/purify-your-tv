@@ -78,6 +78,14 @@ The agent needs repository access and tools to build and connect to your TV. A c
 
 Prayer timetables and masjid search are provided by [royyaa.com](https://royyaa.com). See [Prayer times](docs/PRAYER_TIMES.md) for help choosing your masjid.
 
+## To-do
+
+Planned features—not available yet:
+
+- [ ] Calculate prayer-begins times for locations or masjids not available on [royyaa.com](https://royyaa.com).
+- [ ] Allow choosing a city or coordinates, timezone, calculation method and Asr convention for calculated times, including daylight-saving handling.
+- [ ] Clearly label calculated times separately from masjid-published timetables. Keep Iqamah and Jumuah schedules mosque-provided or manually entered; do not calculate or guess them.
+
 ## Repository map
 
 Source code, setup tools, documentation, themes and tested-device examples are organized separately.
