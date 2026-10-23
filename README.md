@@ -10,6 +10,14 @@ This branch contains the complete source for **v1.3.0 (unreleased)**. The launch
 
 > **Tested device:** Fire TV Stick 4K Max, 2nd generation (AFTKRT), Android 11 / Fire OS 8.1.8.5. Other Fire OS versions, Android TV and Google TV need separate testing. Samsung Tizen and LG webOS cannot install this Android app.
 
+## Disclaimer — use at your own risk
+
+**You install and use this project entirely at your own risk.** Installing a custom launcher, enabling debugging, or changing device settings can cause instability, loss of functionality, data loss, or leave your TV/Fire TV device unusable. Compatibility and recovery are not guaranteed.
+
+These changes **may affect your warranty or eligibility for manufacturer support**, depending on your device, the changes made, the manufacturer's terms and applicable law. Check those terms before proceeding.
+
+This project is provided **“as is,” without warranties of any kind**. To the extent permitted by applicable law, the author and contributors accept no responsibility or liability for device damage, system failures, lost data, repair costs, or warranty/support issues arising from its use. Back up first, read the setup and recovery instructions, and proceed only if you understand and accept the risks.
+
 ## What you get
 
 | Feature | Details |
