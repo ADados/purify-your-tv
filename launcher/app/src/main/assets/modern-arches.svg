@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs>
+<linearGradient id="night" x2="1" y2="1"><stop stop-color="#121725"/><stop offset=".55" stop-color="#172330"/><stop offset="1" stop-color="#213a3f"/></linearGradient>
+<linearGradient id="stone" x2="1" y2=".7"><stop stop-color="#506477" stop-opacity=".03"/><stop offset=".65" stop-color="#5d7e7d" stop-opacity=".18"/><stop offset="1" stop-color="#7e9f99" stop-opacity=".06"/></linearGradient>
+<radialGradient id="light"><stop stop-color="#68897f" stop-opacity=".2"/><stop offset="1" stop-color="#68897f" stop-opacity="0"/></radialGradient>
+</defs>
+<path fill="url(#night)" d="M0 0h1920v1080H0z"/>
+<ellipse cx="1650" cy="350" rx="650" ry="720" fill="url(#light)"/>
+<g fill="none" stroke="url(#stone)">
+<path stroke-width="80" d="M1090 1200V480c0-340 240-520 480-650 240 130 480 310 480 650v720"/>
+<path stroke-width="60" d="M1190 1200V485c0-275 190-435 380-540 190 105 380 265 380 540v715"/>
+<path stroke-width="40" d="M1295 1200V490c0-205 140-340 275-425 135 85 275 220 275 425v710"/>
+<path stroke-width="26" d="M1395 1200V500c0-145 90-245 175-305 85 60 175 160 175 305v700"/>
+</g>
+<path d="M1140 1080V480c0-305 215-475 430-593" fill="none" stroke="#96b0ab" stroke-opacity=".07"/>
+</svg>

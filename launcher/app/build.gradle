@@ -1,0 +1,27 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'local.simplehome.firetv'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'local.simplehome.firetv'
+        minSdk 26
+        targetSdk 34
+        versionCode 6
+        versionName '1.2.3'
+    }
+    signingConfigs {
+        local {
+            storeFile file(System.getenv('PURIFY_KEYSTORE') ?: rootProject.file('signing/local.jks'))
+            storePassword System.getenv('PURIFY_STORE_PASSWORD') ?: 'android'
+            keyAlias System.getenv('PURIFY_KEY_ALIAS') ?: 'simplehome'
+            keyPassword System.getenv('PURIFY_KEY_PASSWORD') ?: (System.getenv('PURIFY_STORE_PASSWORD') ?: 'android')
+        }
+    }
+    buildTypes {
+        release { signingConfig signingConfigs.local }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

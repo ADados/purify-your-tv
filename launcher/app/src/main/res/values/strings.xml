@@ -1,0 +1,4 @@
+<resources>
+    <string name="home_helper_name">Purify Your TV button helper</string>
+    <string name="home_helper_description">Shows your prayer dashboard when Amazon Home appears. Watches only Amazon launcher window changes, without reading screen content or filtering remote keys. Switch off in Accessibility settings or Purify Your TV’s Home helper control.</string>
+</resources>
