@@ -7,8 +7,8 @@
         ['obsidian', 'Obsidian & Gold', 'Dark with champagne accents'],
         ['dusk', 'Twilight', 'Soft sunset and layered hills']
     ];
-    var baseline = {source: 'mcws', id: 'mcws', name: 'MCWS', timezone: 'America/Detroit', address: 'Canton, Michigan'};
-    var chosen = baseline;
+    var chosen = null;
+    var deviceZone = new Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
     var currentTheme = 'classic';
     var pending = {};
     var sequence = 0;
@@ -21,7 +21,7 @@
         var theme = JSON.parse(localStorage.getItem('simplehome.theme.v1'));
         if (themes.some(function (item) { return item[0] === theme; })) currentTheme = theme;
     } catch (error) {}
-    PrayerData.setZone(chosen.timezone);
+    PrayerData.setZone(chosen ? chosen.timezone : deviceZone);
 
     function applyTheme(name) {
         currentTheme = name;
@@ -57,14 +57,14 @@
     });
 
     function updateSummary() {
-        I18n.set(document.getElementById('selected-masjid'), 'Selected: ' + chosen.name + ' · ' + chosen.timezone);
+        I18n.set(document.getElementById('selected-masjid'), chosen ? 'Selected: ' + chosen.name + ' · ' + chosen.timezone : 'No masjid selected');
     }
     function select(mosque) {
         chosen = mosque;
-        PrayerData.setZone(mosque.timezone);
+        PrayerData.setZone(mosque ? mosque.timezone : deviceZone);
         store('simplehome.masjid.v1', chosen);
         updateSummary();
-        I18n.set(document.getElementById('masjid-search-status'), 'Selected ' + mosque.name + '. Loading its timetable…');
+        I18n.set(document.getElementById('masjid-search-status'), mosque ? 'Selected ' + mosque.name + '. Loading its timetable…' : 'Choose your masjid in Settings');
         if (window.onMasjidChanged) window.onMasjidChanged();
     }
     function rpc(method, args) {
@@ -108,7 +108,7 @@
             entries.forEach(function (mosque) {
                 var button = document.createElement('button');
                 button.className = 'nav masjid-result';
-                button.setAttribute('aria-pressed', chosen.id === mosque.id ? 'true' : 'false');
+                button.setAttribute('aria-pressed', chosen && chosen.id === mosque.id ? 'true' : 'false');
                 var title = document.createElement('strong');
                 I18n.set(title, 'Use ' + mosque.name);
                 var detail = document.createElement('span');
@@ -136,10 +136,10 @@
             }
         });
     });
-    document.getElementById('mcws-default').onclick = function () {
+    document.getElementById('clear-masjid').onclick = function () {
         searchVersion++;
         document.getElementById('masjid-results').textContent = '';
-        select(baseline);
+        select(null);
     };
     document.getElementById('device-settings').onclick = function () { if (window.TV) TV.openSettings(); };
     document.getElementById('close-settings').onclick = close;
@@ -162,7 +162,7 @@
             return true;
         },
         timetableStatus: function (id, message) {
-            if (chosen.id === id) I18n.set(document.getElementById('masjid-search-status'), message);
+            if (chosen && chosen.id === id) I18n.set(document.getElementById('masjid-search-status'), message);
         },
         fetchPrayers: function (id, day) { return rpc('fetchMasjidPrayers', [id, day]); }
     };

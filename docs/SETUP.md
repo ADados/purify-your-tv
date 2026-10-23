@@ -46,7 +46,7 @@ The installer asks for confirmation and takes another backup before installing. 
 - Clock digits, timetable numbers, IDs and timezone identifiers remain Latin for readability. Masjid/app names are not translated. Android/Fire TV system screens and available keyboard languages follow the device's own settings; this switch does not install an Arabic keyboard.
 - **Settings → Appearance:** choose a theme; it saves immediately.
 - **Your masjid:** search by name/city or use a Masjidal ID, then select **Use [masjid name]** after checking address and timezone.
-- **Use MCWS · Canton:** returns to the original MCWS source. MCWS is the initial default, not a geolocation choice.
+- **Your masjid:** no masjid is preselected; Settings opens automatically until you choose one. The clock initially uses device time and prayer times remain unavailable. **Clear selection** removes the choice without changing language/theme settings.
 - The on-screen keyboard's **Search** action submits and closes the keyboard. Search names/cities only covers existing Royyaa entries. Add an unlisted masjid by ID.
 - **Fire TV settings:** opens device settings without the Home helper pulling you back.
 - **Amazon Home:** intentional exit; the helper allows Amazon for ten minutes. Reopen Purify Your TV to resume.

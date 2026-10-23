@@ -8,7 +8,10 @@
         'YOUR APPS': 'تطبيقاتك', 'Use the arrows · OK to open · Back to dashboard': 'استخدم الأسهم · موافق للفتح · رجوع إلى الرئيسية',
         'A little more calm. A little less noise.': 'هدوء أكثر. ضوضاء أقل.', 'Your app library': 'مكتبة التطبيقات',
         'Done': 'تم', 'MAKE YOURSELF AT HOME': 'مساحتك كما تحب', 'Launcher settings': 'إعدادات الواجهة',
-        'Language': 'اللغة', 'Appearance': 'المظهر', 'Your masjid': 'مسجدك', 'Use MCWS · Canton': 'اختيار MCWS · كانتون',
+        'Language': 'اللغة', 'Appearance': 'المظهر', 'Your masjid': 'مسجدك', 'Clear selection': 'إلغاء الاختيار',
+        'No masjid selected': 'لم يتم اختيار مسجد', 'Choose your masjid': 'اختر مسجدك', 'Device time': 'وقت الجهاز',
+        'Choose your masjid in Settings': 'اختر مسجدك من الإعدادات',
+        'Choose a masjid in Settings to see prayer times.': 'اختر مسجدًا من الإعدادات لعرض مواقيت الصلاة.',
         'Find by name or city': 'ابحث بالاسم أو المدينة', 'At least 2 characters': 'حرفان على الأقل',
         'Or enter a Masjidal ID': 'أو أدخل معرّف Masjidal', 'For example, z0AWYBKj': 'مثال: z0AWYBKj',
         'Search': 'بحث', 'Find by ID': 'بحث بالمعرّف', 'Fire TV settings': 'إعدادات Fire TV',
@@ -24,7 +27,6 @@
         'NO IQAMAH': 'لا إقامة', 'JUMUAH SESSIONS': 'مواعيد الجمعة', 'IQAMAH': 'الإقامة',
         'Prayer times': 'مواقيت الصلاة', 'Hijri estimate': 'التاريخ الهجري تقديري',
         'Prayer times provided by Royyaa': 'مواقيت الصلاة مقدّمة من Royyaa',
-        'Prayer times from MCWS · Masjid search powered by Royyaa': 'مواقيت الصلاة من MCWS · البحث عن المساجد بواسطة Royyaa',
         'No upcoming published Iqamah · check the masjid timetable.': 'لا توجد إقامة قادمة منشورة · راجع جدول المسجد.',
         'Getting your masjid’s timetable…': 'جارٍ تحميل مواقيت مسجدك…',
         'Timetable unavailable · check your connection': 'المواقيت غير متاحة · تحقق من الاتصال',
@@ -41,10 +43,7 @@
         'Enter a valid Masjidal ID or at least two search characters.': 'أدخل معرّفًا صحيحًا أو حرفين على الأقل للبحث.',
         'Invalid search.': 'بحث غير صالح.', 'Invalid masjid or date.': 'المسجد أو التاريخ غير صالح.',
         'Masjid timezone changed. Select it again in Settings.': 'تغيرت المنطقة الزمنية للمسجد. اختره مجددًا من الإعدادات.',
-        'No timetable published for today.': 'لم تُنشر مواقيت اليوم.',
-        'MCWS timetable ready · America/Detroit': 'مواقيت MCWS جاهزة · America/Detroit',
-        'Using today’s saved MCWS timetable · offline': 'عرض مواقيت MCWS المحفوظة لليوم · دون اتصال',
-        'MCWS timetable unavailable. Check your connection.': 'مواقيت MCWS غير متاحة. تحقق من الاتصال.'
+        'No timetable published for today.': 'لم تُنشر مواقيت اليوم.'
     };
     var patterns = [
         [/^Selected: (.+) · (.+)$/, 'المسجد المختار: {1} · {2}'],

@@ -8,7 +8,7 @@
 
 ## Verified observations
 
-The dashboard installed and launched, displayed the live MCWS timetable, opened streaming apps and system settings, and rendered launcher settings and all theme choices. Live Royyaa ID lookup returned Scarborough Islamic Centre; its name/city lookup was also exercised using the actual Fire TV keyboard's Search button. The lookup test did not change the owner's MCWS selection. London timezone/DST, Friday sessions, tomorrow and invalid/expired data were checked locally against public API responses; do not represent all of these as on-TV timezone-switch tests.
+The dashboard installed and launched, displayed a live prayer timetable, opened streaming apps and system settings, and rendered launcher settings and all theme choices. Live Royyaa ID lookup returned Scarborough Islamic Centre; its name/city lookup was also exercised using the actual Fire TV keyboard's Search button. The lookup test did not change the owner's masjid selection. London timezone/DST, Friday sessions, tomorrow and invalid/expired data were checked locally against public API responses; do not represent all of these as on-TV timezone-switch tests.
 
 The owner confirmed physical remote arrows/app launching and the Home redirect, including after a full restart, during earlier helper development. The helper remained enabled/bound through later in-place updates. A full physical-remote restart test was **not repeated for every UI-only update**.
 

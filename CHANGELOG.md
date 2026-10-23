@@ -1,5 +1,11 @@
 # Change history
 
+## 1.3.1 (unreleased)
+
+- Removed the built-in direct prayer source and hard-coded masjid/location defaults.
+- New or unsupported older selections open Settings for the user to choose a masjid. Saved Royyaa selections, language and theme preferences remain intact.
+- Added Clear selection, a localized no-masjid state, and device-local clock behavior before selection. No timetable is fetched or displayed without a chosen masjid.
+
 ## 1.3.0 (unreleased)
 
 - Added Settings → Language with English and العربية, saved independently of themes and masjid choices.
@@ -33,7 +39,7 @@
 - Added Royyaa name/city search, exact Masjidal ID lookup and explicit result selection.
 - Added seven-day schedules, masjid-local timezone handling, multiple Jumuah sessions and separate per-masjid caches.
 - Added attribution under prayer times, missing-data handling and stale-response isolation.
-- Preserved MCWS as the default direct source and system settings access.
+- Preserved system settings access.
 
 ## 1.1.0
 
@@ -43,5 +49,5 @@
 
 ## 1.0.0
 
-- Initial English prayer dashboard, direct MCWS timetable, Hijri estimate, app shortcuts and app library.
+- Initial English prayer dashboard, Hijri estimate, app shortcuts and app library.
 - Packaged-only WebView with fixed-host native HTTPS requests.

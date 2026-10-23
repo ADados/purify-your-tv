@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -51,7 +50,6 @@ public final class MainActivity extends Activity {
     private WebView browser;
     private final Map<String, ComponentName> applications = new ConcurrentHashMap<>();
     private final ExecutorService requests = Executors.newFixedThreadPool(3);
-    private final AtomicBoolean fetching = new AtomicBoolean();
     private final AtomicInteger masjidRequests = new AtomicInteger();
 
     @Override public void onCreate(Bundle state) {
@@ -143,7 +141,7 @@ public final class MainActivity extends Activity {
         }
 
         @JavascriptInterface public String getHijriDate(boolean afterMaghrib) {
-            return getHijriDateForZone(afterMaghrib, "America/Detroit");
+            return getHijriDateForZone(afterMaghrib, ZoneId.systemDefault().getId());
         }
 
         @JavascriptInterface public String getHijriDateForZone(boolean afterMaghrib, String timezone) {
@@ -231,44 +229,6 @@ public final class MainActivity extends Activity {
                 HomeReturnService.pauseForSettings();
                 try { startActivity(new Intent(Settings.ACTION_SETTINGS)); }
                 catch (RuntimeException error) { amazonHome(); }
-            });
-        }
-
-        @JavascriptInterface public void refreshPrayers() {
-            if (!fetching.compareAndSet(false, true)) return;
-            requests.execute(() -> {
-                JSONObject result = new JSONObject();
-                HttpsURLConnection connection = null;
-                try {
-                    connection = (HttpsURLConnection) new URL("https://www.mcws.org/").openConnection();
-                    connection.setConnectTimeout(10000);
-                    connection.setReadTimeout(15000);
-                    connection.setRequestProperty("Cache-Control", "no-cache");
-                    connection.setInstanceFollowRedirects(false);
-                    int status = connection.getResponseCode();
-                    if (status != 200) throw new java.io.IOException("Timetable unavailable");
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();
-                    try (InputStream input = connection.getInputStream()) {
-                        byte[] buffer = new byte[8192];
-                        int count;
-                        while ((count = input.read(buffer)) != -1) {
-                            if (output.size() + count > 1048576) throw new java.io.IOException("Timetable too large");
-                            output.write(buffer, 0, count);
-                        }
-                    }
-                    result.put("html", output.toString(StandardCharsets.UTF_8.name()));
-                    result.put("date", connection.getHeaderField("Date"));
-                } catch (Exception error) {
-                    try { result.put("error", "MCWS could not be reached"); }
-                    catch (org.json.JSONException ignored) { }
-                } finally {
-                    if (connection != null) connection.disconnect();
-                    fetching.set(false);
-                }
-                String payload = result.toString().replace("\u2028", "\\u2028").replace("\u2029", "\\u2029");
-                runOnUiThread(() -> {
-                    if (!isDestroyed()) browser.evaluateJavascript("window.onPrayerResponse(" + payload + ")", null);
-                });
             });
         }
 

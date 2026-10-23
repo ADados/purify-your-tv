@@ -1,6 +1,6 @@
 (function (root) {
     'use strict';
-    var zone = 'America/Detroit';
+    var zone = 'UTC';
     var names = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     var keys = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
     var formatter = new Intl.DateTimeFormat('en-US', {
@@ -95,45 +95,6 @@
         return guess;
     }
 
-    function extractArray(text, start) {
-        var depth = 0;
-        var quoted = false;
-        var escaped = false;
-        for (var position = start; position < text.length; position++) {
-            var character = text[position];
-            if (quoted) {
-                if (escaped) escaped = false;
-                else if (character === '\\') escaped = true;
-                else if (character === '"') quoted = false;
-            } else if (character === '"') quoted = true;
-            else if (character === '[') depth++;
-            else if (character === ']' && --depth === 0) return JSON.parse(text.slice(start, position + 1));
-        }
-        throw new Error('Incomplete timetable');
-    }
-
-    function parseMCWS(html) {
-        var pattern = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
-        var match;
-        while ((match = pattern.exec(html))) {
-            var text = JSON.parse(match[1]);
-            var marker = text.indexOf('"prayer":[');
-            if (marker < 0) continue;
-            var rows = extractArray(text, marker + 9);
-            var prayers = keys.map(function (key, index) {
-                var found = rows.find(function (row) { return row.key === key; });
-                if (!found || minutes(found.begins) === null || (key !== 'sunrise' && minutes(found.jamaah) === null)) {
-                    throw new Error('Incomplete MCWS prayer data');
-                }
-                return { key: key, name: names[index], begins: found.begins, iqamah: key === 'sunrise' ? null : found.jamaah };
-            });
-            var jummah = rows.find(function (row) { return row.key === 'jummah-mcws'; });
-            var friday = jummah ? [jummah.begins, jummah.jamaah].filter(function (time) { return minutes(time) !== null; }) : [];
-            return { prayers: prayers, friday: friday };
-        }
-        throw new Error('MCWS timetable was not found');
-    }
-
     function validSnapshot(snapshot, now) {
         return !!(snapshot && snapshot.date === dateKey(now) && Array.isArray(snapshot.prayers) &&
             snapshot.prayers.length === keys.length && snapshot.prayers.every(function (prayer, index) {
@@ -185,7 +146,7 @@
     }
 
     var api = { zone: zone, keys: keys, names: names, parts: parts, dateKey: dateKey, minutes: minutes,
-        epoch: epoch, parseMCWS: parseMCWS, validSnapshot: validSnapshot, next: next,
+        epoch: epoch, validSnapshot: validSnapshot, next: next,
         setZone: setZone, masjid: masjid, parseRoyyaa: parseRoyyaa, nextScheduled: nextScheduled };
     root.PrayerData = api;
     if (typeof module !== 'undefined' && module.exports) module.exports = api;

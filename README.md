@@ -6,7 +6,7 @@
 
 Five themes. Clear prayer and Iqamah times. A remote-friendly app library. No sponsored rows in this dashboard. No root and no disabling Amazon's launcher.
 
-This branch contains the complete source for **v1.3.0 (unreleased)**. The launcher uses internet access for mosque timetables. It does not include debloating lists or automatically remove any apps.
+This repository contains the complete source for **v1.3.1 (unreleased)**. The launcher uses internet access for mosque timetables. It does not include debloating lists or automatically remove any apps.
 
 > **Tested device:** Fire TV Stick 4K Max, 2nd generation (AFTKRT), Android 11 / Fire OS 8.1.8.5. Other Fire OS versions, Android TV and Google TV need separate testing. Samsung Tizen and LG webOS cannot install this Android app.
 
@@ -60,7 +60,7 @@ Screenshots are **browser-rendered demonstrations with example times and a ficti
 
    Replace `<TV_IP>`; do not paste the angle brackets into a shell. Backups are saved locally before installation. Windows users can use `python` instead of `python3` and follow the [Gradle build instructions](docs/BUILD.md).
 
-5. In the launcher, open **Settings** to choose a language, theme and masjid. The initial defaults are **English**, **MCWS, Canton, Michigan** and **Teal & Gold**; they are not based on your location.
+5. In the launcher, choose your masjid in **Settings**, then select a language and theme. Initial defaults are **English** and **Teal & Gold**, with **no masjid preselected**. Settings opens automatically until you choose a masjid. The clock uses device time until then; prayer times remain unavailable.
 6. If desired, follow [HOME BUTTON](docs/HOME_BUTTON.md) to enable the optional helper. Installation alone does **not** enable it or change the system Home role.
 7. Test the **physical remote**, then disable network/USB debugging and revoke authorizations. The installed app and helper do not need a computer or ADB to run.
 
@@ -78,11 +78,11 @@ The agent needs repository access and tools to build and connect to your TV. A c
 
 - **Name/city search only finds masjids already added to Royyaa.** No matches is not a broken search. Use the masjid's Masjidal ID to add it, then select the named result.
 - The keyboard button reads **Search**, not Next. It submits the field, closes the keyboard and shows results.
-- `z0AWYBKj` identifies **Scarborough Islamic Centre, England**. It is an example, not MCWS and not selected automatically.
+- `z0AWYBKj` identifies **Scarborough Islamic Centre, England**. It is an example and is not selected automatically.
 - Times follow the selected masjid's timezone. Multiple Friday sessions are preserved.
 - Missing Iqamah remains unavailable. No timetable is invented, and stale days or another masjid's cache are not substituted.
-- The original direct MCWS source is available via **Use MCWS · Canton**. Its cache is usable only on its Canton-local date.
-- Royyaa schedules say **Prayer times provided by Royyaa** beneath the timetable. Direct MCWS data keeps its own attribution. Hijri dates are estimates.
+- **Clear selection** removes your masjid choice without deleting language/theme preferences. Previously saved Royyaa choices remain available after upgrades; unsupported older selections require choosing a masjid again.
+- Schedules say **Prayer times provided by Royyaa** beneath the timetable. Hijri dates are estimates.
 
 Prayer timetables and masjid search are provided by [royyaa.com](https://royyaa.com). See [Prayer times](docs/PRAYER_TIMES.md) for help choosing your masjid.
 

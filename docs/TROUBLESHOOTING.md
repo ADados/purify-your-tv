@@ -8,9 +8,9 @@
 | Missing SDK files | Install platform 34 and build-tools 34.0.0; set ANDROID_HOME. |
 | Gradle hangs | Use the SDK-only builder. Do not kill unrelated Java processes. A fallback build is not a lint pass. |
 | Signing mismatch | Restore the original private signing key. Do not uninstall or clear data. |
-| City/name has no results | Royyaa only searches previously added masjids. Check spelling or add the masjid with its Masjidal ID. Canton/MCWS may not be listed. |
+| City/name has no results | Royyaa only searches previously added masjids. Check spelling or add the masjid with its Masjidal ID. |
 | Keyboard Next does nothing | Use v1.2.2 or later; it now advertises Search, submits and dismisses the keyboard. Back can dismiss the keyboard before using the separate Search button. |
-| Wrong country/timezone | Confirm returned masjid name/address before selecting. `z0AWYBKj` is Scarborough, England, not MCWS. Use MCWS · Canton to return to the original source. |
+| Wrong country/timezone | Confirm returned masjid name/address before selecting. `z0AWYBKj` is Scarborough, England. Clear the selection and choose your own masjid if needed. |
 | Times unavailable/offline | Check internet and the masjid's published timetable. Missing/stale Iqamah is not guessed; only valid cached dates are used. |
 | Home still shows Amazon | Check helper enabled/bound, whether the explicit Amazon Home bypass is active, and model/firmware. Reopen the app to clear bypass. Never disable Amazon Home. |
 | Home briefly flashes Amazon | Expected for this window-event workaround; it is not the system Home role. |

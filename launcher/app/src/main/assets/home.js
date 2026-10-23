@@ -7,7 +7,7 @@
     var lastSuccess = 0;
     var requestedDay = '';
     var signature = '';
-    var cacheKey = 'simplehome.mcws.v1';
+    var cacheKey = null;
     var selected = LauncherSettings.selected();
     var schedule = [];
     var generation = 0;
@@ -30,10 +30,10 @@
 
     function render() {
         var now = new Date();
-        if (selected.source === 'royyaa') snapshot = schedule.find(function (day) { return day.date === PrayerData.dateKey(now); }) || null;
+        snapshot = schedule.find(function (day) { return day.date === PrayerData.dateKey(now); }) || null;
         var valid = PrayerData.validSnapshot(snapshot, now);
-        var next = selected.source === 'royyaa' ? PrayerData.nextScheduled(schedule, now, 'iqamah') : PrayerData.next(snapshot, now, 'iqamah');
-        var adhan = selected.source === 'royyaa' ? PrayerData.nextScheduled(schedule, now, 'begins') : PrayerData.next(snapshot, now, 'begins');
+        var next = PrayerData.nextScheduled(schedule, now, 'iqamah');
+        var adhan = PrayerData.nextScheduled(schedule, now, 'begins');
         var clock = new Intl.DateTimeFormat('en-US', {timeZone: PrayerData.zone, hour: 'numeric', minute: '2-digit'}).format(now);
         var clockParts = clock.split(' ');
         var clockElement = document.getElementById('clock');
@@ -45,12 +45,12 @@
         var maghrib = valid && snapshot.prayers[4];
         var local = PrayerData.parts(now);
         var afterMaghrib = !!(maghrib && local.hour * 60 + local.minute >= PrayerData.minutes(maghrib.begins));
-        put('hijri', window.TV && TV.getHijriDateForZone ? TV.getHijriDateForZone(afterMaghrib, selected.timezone) + ' · Hijri estimate' : selected.timezone);
-        put('masjid-badge', selected.name);
-        document.querySelector('.location').textContent = selected.source === 'mcws' ? selected.address : selected.timezone.replace(/_/g, ' ');
-        document.querySelector('.location').title = selected.address;
-        put('footer-source', selected.name + ' · ' + selected.timezone + ' · Hijri estimate');
-        put('provider-note', selected.source === 'royyaa' ? 'Prayer times provided by Royyaa' : 'Prayer times from MCWS · Masjid search powered by Royyaa');
+        put('hijri', window.TV && TV.getHijriDateForZone ? TV.getHijriDateForZone(afterMaghrib, PrayerData.zone) + ' · Hijri estimate' : PrayerData.zone);
+        put('masjid-badge', selected ? selected.name : I18n.text('Choose your masjid'));
+        document.querySelector('.location').textContent = selected ? selected.timezone.replace(/_/g, ' ') : I18n.text('Device time');
+        document.querySelector('.location').title = selected ? selected.address : '';
+        put('footer-source', selected ? selected.name + ' · ' + selected.timezone + ' · Hijri estimate' : 'Choose your masjid in Settings');
+        put('provider-note', 'Prayer times provided by Royyaa');
         if (next) {
             var seconds = Math.max(0, Math.ceil((next.timestamp - now.getTime()) / 1000));
             var hours = Math.floor(seconds / 3600);
@@ -58,16 +58,16 @@
             put('iqamah-time', I18n.time(tidy(next.time)));
             put('iqamah-countdown', (next.day && next.day !== PrayerData.dateKey(now) ? 'Tomorrow · in ' : 'In ') + (hours ? hours + 'h ' : '') + Math.floor(seconds % 3600 / 60) + 'm ' + String(seconds % 60).padStart(2, '0') + 's');
         } else {
-            put('iqamah-name', 'Prayer times');
+            put('iqamah-name', selected ? 'Prayer times' : 'Choose your masjid');
             put('iqamah-time', '—');
-            put('iqamah-countdown', valid ? 'No upcoming published Iqamah · check the masjid timetable.' : (loading ? 'Getting your masjid’s timetable…' : 'Timetable unavailable · check your connection'));
+            put('iqamah-countdown', !selected ? 'Choose a masjid in Settings to see prayer times.' : (valid ? 'No upcoming published Iqamah · check the masjid timetable.' : (loading ? 'Getting your masjid’s timetable…' : 'Timetable unavailable · check your connection')));
         }
         var friday = new Date(PrayerData.dateKey(now) + 'T12:00:00Z').getUTCDay() === 5;
         put('next-adhan', valid && friday && snapshot.friday && snapshot.friday.length
             ? 'Jumuah · ' + snapshot.friday.map(tidy).join(' & ')
-            : (adhan ? 'Next prayer begins · ' + adhan.name + (adhan.day && adhan.day !== PrayerData.dateKey(now) ? ' tomorrow' : '') + ' at ' + tidy(adhan.time) : selected.name));
-        put('source-status', valid ? (offline ? 'Saved timetable · ' + snapshot.date + ' · offline' : selected.name + ' · ' + snapshot.date)
-            : (loading ? 'Loading ' + selected.name + '…' : 'No current timetable · ' + selected.name));
+            : (adhan ? 'Next prayer begins · ' + adhan.name + (adhan.day && adhan.day !== PrayerData.dateKey(now) ? ' tomorrow' : '') + ' at ' + tidy(adhan.time) : (selected ? selected.name : 'Choose your masjid in Settings')));
+        put('source-status', !selected ? 'No masjid selected' : (valid ? (offline ? 'Saved timetable · ' + snapshot.date + ' · offline' : selected.name + ' · ' + snapshot.date)
+            : (loading ? 'Loading ' + selected.name + '…' : 'No current timetable · ' + selected.name)));
         var nextSignature = JSON.stringify([I18n.language(), valid && snapshot.prayers, valid && snapshot.friday, friday, next && next.key, next && next.day]);
         if (signature === nextSignature) return;
         signature = nextSignature;
@@ -100,7 +100,7 @@
     }
 
     function refresh() {
-        if (loading) return;
+        if (loading || !selected) return;
         loading = true;
         requestedDay = PrayerData.dateKey(new Date());
         lastAttempt = Date.now();
@@ -129,33 +129,8 @@
                 render();
             });
         }
-        else if (window.TV) TV.refreshPrayers();
-        else window.onPrayerResponse({error: 'Native TV connection unavailable'});
         render();
     }
-
-    window.onPrayerResponse = function (response) {
-        if (selected.source !== 'mcws') return;
-        loading = false;
-        try {
-            if (response.error || !response.date || isNaN(Date.parse(response.date))) throw new Error('Unavailable source');
-            var day = PrayerData.dateKey(new Date(response.date));
-            if (day !== requestedDay || day !== PrayerData.dateKey(new Date())) throw new Error('Outdated source');
-            var parsed = PrayerData.parseMCWS(response.html);
-            parsed.date = day;
-            parsed.fetchedAt = new Date().toISOString();
-            if (!PrayerData.validSnapshot(parsed, new Date())) throw new Error('Invalid timetable');
-            snapshot = parsed;
-            offline = false;
-            lastSuccess = Date.now();
-            try { localStorage.setItem(cacheKey, JSON.stringify(snapshot)); } catch (error) {}
-            LauncherSettings.timetableStatus('mcws', 'MCWS timetable ready · America/Detroit');
-        } catch (error) {
-            offline = true;
-            LauncherSettings.timetableStatus('mcws', PrayerData.validSnapshot(snapshot, new Date()) ? 'Using today’s saved MCWS timetable · offline' : 'MCWS timetable unavailable. Check your connection.');
-        }
-        render();
-    };
 
     function appButton(app) {
         var button = document.createElement('button');
@@ -244,11 +219,11 @@
         offline = true;
         lastSuccess = 0;
         signature = '';
-        cacheKey = selected.source === 'mcws' ? 'simplehome.mcws.v1' : 'simplehome.royyaa.v1.' + selected.id;
+        cacheKey = selected ? 'simplehome.royyaa.v1.' + selected.id : null;
+        if (!selected) return;
         try {
             var saved = JSON.parse(localStorage.getItem(cacheKey));
-            if (selected.source === 'mcws') snapshot = saved;
-            else if (saved && saved.masjid && saved.masjid.id === selected.id && saved.masjid.timezone === selected.timezone && Array.isArray(saved.days)) {
+            if (saved && saved.masjid && saved.masjid.id === selected.id && saved.masjid.timezone === selected.timezone && Array.isArray(saved.days)) {
                 schedule = saved.days.filter(function (day) { return day.masjidId === selected.id && day.timezone === selected.timezone; });
             }
         } catch (error) {}
@@ -265,4 +240,5 @@
         if (Date.now() - lastAttempt > 60000 && (!PrayerData.validSnapshot(snapshot, new Date()) || Date.now() - lastSuccess > 900000)) refresh();
     }, 1000);
     (document.querySelector('#dock button') || document.getElementById('apps-button')).focus();
+    if (!selected) LauncherSettings.open();
 })();

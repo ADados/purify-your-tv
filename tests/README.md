@@ -11,11 +11,11 @@ This repository currently provides a **manual reproduction checklist**, not a co
 
 ## Prayer data
 
-- MCWS current source/cache accepted; yesterday's data rejected at Canton midnight.
+- Fresh, cleared and unsupported older selections show no masjid, no prayer times and no timetable request; Settings opens for setup. Existing Royyaa selections and their valid caches survive upgrades.
 - Royyaa search empty results, unknown ID, malformed response, missing Iqamah and invalid timezone/date/time handled visibly.
 - `zuhr` maps to Dhuhr, all Jumuah array entries survive and replace regular Friday Dhuhr Iqamah candidates.
 - `00:00` and `12:00` display as midnight/noon correctly; local time is never mistaken for UTC.
-- Check Europe/London's 2026-10-25 DST change and America/Detroit's local date boundary.
+- Check Europe/London's 2026-10-25 DST change and the selected masjid's local date boundary.
 - After Isha, published tomorrow Fajr may appear; missing/expired future data is never invented.
 - Switch masjids while requests are pending; old replies must not overwrite the new source. Cached data must match both masjid ID and timezone.
 
