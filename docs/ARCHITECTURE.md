@@ -18,12 +18,13 @@ An InputConnectionWrapper advertises Search for the two settings inputs and subm
 | `home.js` | Remote navigation, app dock, rendering, source changes, cache isolation and refresh lifecycle. |
 | `prayer-data.js` | MCWS/Royyaa parsers, time validation, local dates, zone/DST epoch conversion and next-prayer selection. |
 | `launcher-settings.js` | Five themes, persistent choices, masjid search/selection and correlated native requests. |
+| `i18n.js`, `language.css` | Saved English/Arabic choice, local translations, Gregorian Arabic date formatting, RTL layout and isolated left-to-right time/ID fields. |
 | `home.css`, `refresh.css` | Original teal layout and larger per-prayer cards. |
 | `modern.css`, `theme-*.css` | Modern base and palette/layout variants. |
 | `settings.css` | Common settings, focus and timetable-attribution layout. |
 | `islamic-night.svg`, `modern-arches.svg`, `dusk.svg` | Local code-native backgrounds. |
 
-LocalStorage keeps stable theme/masjid preference keys. MCWS has its own daily cache; Royyaa caches are keyed by masjid ID and include timezone. Masjid switches increment a generation so late requests cannot repopulate another masjid's screen. External strings use textContent, not HTML.
+LocalStorage keeps stable theme/masjid preference keys and the independent `simplehome.language.v1` language choice. Language changes re-render existing data without switching the masjid, changing its timezone or triggering a timetable request. The native bridge receives the validated language for app-owned dialogs, keyboard action labels and Hijri month names; system settings and installed-app names remain device-provided. MCWS has its own daily cache; Royyaa caches are keyed by masjid ID and include timezone. Masjid switches increment a generation so late requests cannot repopulate another masjid's screen. External strings use textContent, not HTML. Arabic dates explicitly use the Gregorian calendar, leaving prayer calculations and the native Hijri estimate separate.
 
 ## Home helper
 

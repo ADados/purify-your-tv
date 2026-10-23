@@ -42,9 +42,9 @@
         var swatch = document.createElement('span');
         swatch.className = 'theme-swatch swatch-' + theme[0];
         var name = document.createElement('strong');
-        name.textContent = theme[1];
+        I18n.set(name, theme[1]);
         var description = document.createElement('small');
-        description.textContent = theme[2];
+        I18n.set(description, theme[2]);
         button.appendChild(swatch);
         button.appendChild(name);
         button.appendChild(description);
@@ -52,16 +52,19 @@
         document.getElementById('theme-options').appendChild(button);
     });
     applyTheme(currentTheme);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-language]'), function (button) {
+        button.onclick = function () { I18n.choose(button.getAttribute('data-language')); };
+    });
 
     function updateSummary() {
-        document.getElementById('selected-masjid').textContent = 'Selected: ' + chosen.name + ' · ' + chosen.timezone;
+        I18n.set(document.getElementById('selected-masjid'), 'Selected: ' + chosen.name + ' · ' + chosen.timezone);
     }
     function select(mosque) {
         chosen = mosque;
         PrayerData.setZone(mosque.timezone);
         store('simplehome.masjid.v1', chosen);
         updateSummary();
-        document.getElementById('masjid-search-status').textContent = 'Selected ' + mosque.name + '. Loading its timetable…';
+        I18n.set(document.getElementById('masjid-search-status'), 'Selected ' + mosque.name + '. Loading its timetable…');
         if (window.onMasjidChanged) window.onMasjidChanged();
     }
     function rpc(method, args) {
@@ -92,24 +95,24 @@
         var version = ++searchVersion;
         results.textContent = '';
         if (byId ? !/^[A-Za-z0-9_-]{1,64}$/.test(value) : value.length < 2) {
-            status.textContent = byId ? 'Enter a valid Masjidal ID.' : 'Type at least two characters.';
+            I18n.set(status, byId ? 'Enter a valid Masjidal ID.' : 'Type at least two characters.');
             return;
         }
-        status.textContent = 'Searching Royyaa…';
+        I18n.set(status, 'Searching Royyaa…');
         rpc('searchMasjids', [value, byId]).then(function (response) {
             if (version !== searchVersion) return;
             var records = Array.isArray(response) ? response : response && response.results;
             if (!Array.isArray(records)) throw new Error('The service returned an unexpected search response.');
             var entries = records.slice(0, 20).map(PrayerData.masjid);
-            status.textContent = entries.length ? 'Choose a masjid below to use its timetable.' : 'No matches for “' + value + '” in Royyaa’s directory. It only includes masjids already added. Use Find by ID to add your masjid.';
+            I18n.set(status, entries.length ? 'Choose a masjid below to use its timetable.' : 'No matches for “' + value + '” in Royyaa’s directory. It only includes masjids already added. Use Find by ID to add your masjid.');
             entries.forEach(function (mosque) {
                 var button = document.createElement('button');
                 button.className = 'nav masjid-result';
                 button.setAttribute('aria-pressed', chosen.id === mosque.id ? 'true' : 'false');
                 var title = document.createElement('strong');
-                title.textContent = 'Use ' + mosque.name;
+                I18n.set(title, 'Use ' + mosque.name);
                 var detail = document.createElement('span');
-                detail.textContent = mosque.address + ' · ' + mosque.timezone + ' · ID: ' + mosque.id;
+                I18n.set(detail, mosque.address + ' · ' + mosque.timezone + ' · ID: ' + mosque.id);
                 button.appendChild(title);
                 button.appendChild(detail);
                 button.onclick = function () {
@@ -119,7 +122,7 @@
                 results.appendChild(button);
             });
             if (entries.length && !panel.hidden) results.firstChild.focus();
-        }).catch(function (error) { if (version === searchVersion) status.textContent = error.message; });
+        }).catch(function (error) { if (version === searchVersion) I18n.set(status, error.message); });
     }
     document.getElementById('search-masjids').onclick = function () { search(false); };
     document.getElementById('lookup-masjid').onclick = function () { search(true); };
@@ -159,7 +162,7 @@
             return true;
         },
         timetableStatus: function (id, message) {
-            if (chosen.id === id) document.getElementById('masjid-search-status').textContent = message;
+            if (chosen.id === id) I18n.set(document.getElementById('masjid-search-status'), message);
         },
         fetchPrayers: function (id, day) { return rpc('fetchMasjidPrayers', [id, day]); }
     };

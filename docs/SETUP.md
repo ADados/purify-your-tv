@@ -41,6 +41,9 @@ The installer asks for confirmation and takes another backup before installing. 
 
 ## 3. Configure the launcher
 
+- **Settings → Language → العربية:** switches the dashboard, settings, prayer labels and app-owned helper messages to Arabic with right-to-left layout. Select **English** to switch back. No restart is needed; the choice survives updates/restarts without changing the masjid or theme.
+- **الإعدادات ← اللغة ← العربية:** لتفعيل الواجهة العربية. يمكنك العودة إلى English في أي وقت.
+- Clock digits, timetable numbers, IDs and timezone identifiers remain Latin for readability. Masjid/app names are not translated. Android/Fire TV system screens and available keyboard languages follow the device's own settings; this switch does not install an Arabic keyboard.
 - **Settings → Appearance:** choose a theme; it saves immediately.
 - **Your masjid:** search by name/city or use a Masjidal ID, then select **Use [masjid name]** after checking address and timezone.
 - **Use MCWS · Canton:** returns to the original MCWS source. MCWS is the initial default, not a geolocation choice.

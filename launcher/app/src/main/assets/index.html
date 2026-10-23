@@ -12,31 +12,34 @@
 <link rel="stylesheet" href="theme-obsidian.css" id="theme-obsidian" disabled>
 <link rel="stylesheet" href="theme-dusk.css" id="theme-dusk" disabled>
 <link rel="stylesheet" href="settings.css">
+<link rel="stylesheet" href="language.css">
 </head>
 <body>
 <main id="dashboard">
-    <header><div class="brand"><span class="brand-mark">◇</span> PURIFY YOUR TV <span class="location">Canton, Michigan</span></div><div class="controls"><button class="nav" id="apps-button">All apps</button><button class="nav" id="helper-button">Home helper</button><button class="nav" id="settings-button">Settings</button><button class="nav" id="amazon-button">Amazon Home</button></div></header>
+    <header><div class="brand"><span class="brand-mark">◇</span> PURIFY YOUR TV <span class="location">Canton, Michigan</span></div><div class="controls"><button class="nav" id="apps-button" data-i18n="All apps">All apps</button><button class="nav" id="helper-button" data-i18n="Home helper">Home helper</button><button class="nav" id="settings-button" data-i18n="Settings">Settings</button><button class="nav" id="amazon-button" data-i18n="Amazon Home">Amazon Home</button></div></header>
     <section class="hero">
-        <div class="iqamah panel"><div class="eyebrow">NEXT IQAMAH <span id="masjid-badge">MCWS</span></div><div class="iqamah-main"><h1 id="iqamah-name">Welcome home</h1><span id="iqamah-time">—</span></div><div id="iqamah-countdown">Getting today’s mosque timetable…</div><div id="next-adhan" class="muted">Muslim Community of Western Suburbs</div></div>
+        <div class="iqamah panel"><div class="eyebrow"><b data-i18n="NEXT IQAMAH">NEXT IQAMAH</b> <span id="masjid-badge">MCWS</span></div><div class="iqamah-main"><h1 id="iqamah-name">Welcome home</h1><span id="iqamah-time">—</span></div><div id="iqamah-countdown">Getting today’s mosque timetable…</div><div id="next-adhan" class="muted">Muslim Community of Western Suburbs</div></div>
         <div class="clock"><div id="clock">—</div><div id="date"></div><div id="hijri" class="muted"></div></div>
     </section>
-    <section class="prayers panel"><div class="prayer-heading"><span>TODAY’S PRAYERS</span><span id="source-status">Connecting to MCWS…</span></div><div id="prayer-cells"></div><div id="provider-note">Prayer times from MCWS · Masjid search powered by Royyaa</div></section>
-    <section class="apps"><div class="section-heading"><span>YOUR APPS</span><span>Use the arrows · OK to open · Back to dashboard</span></div><div id="dock"></div></section>
-    <footer><span>A little more calm. A little less noise.</span><span id="footer-source">MCWS · Hijri date is an estimate</span></footer>
+    <section class="prayers panel"><div class="prayer-heading"><span data-i18n="TODAY’S PRAYERS">TODAY’S PRAYERS</span><span id="source-status">Connecting to MCWS…</span></div><div id="prayer-cells"></div><div id="provider-note">Prayer times from MCWS · Masjid search powered by Royyaa</div></section>
+    <section class="apps"><div class="section-heading"><span data-i18n="YOUR APPS">YOUR APPS</span><span data-i18n="Use the arrows · OK to open · Back to dashboard">Use the arrows · OK to open · Back to dashboard</span></div><div id="dock"></div></section>
+    <footer><span data-i18n="A little more calm. A little less noise.">A little more calm. A little less noise.</span><span id="footer-source">MCWS · Hijri date is an estimate</span></footer>
 </main>
-<section id="library" hidden><header><div><div class="eyebrow">PURIFY YOUR TV</div><h1>Your app library</h1></div><button class="nav" id="close-library">Done</button></header><div id="library-grid"></div></section>
+<section id="library" hidden><header><div><div class="eyebrow">PURIFY YOUR TV</div><h1 data-i18n="Your app library">Your app library</h1></div><button class="nav" id="close-library" data-i18n="Done">Done</button></header><div id="library-grid"></div></section>
 <section id="launcher-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
-    <header><div><div class="settings-kicker">MAKE YOURSELF AT HOME</div><h1 id="settings-title">Launcher settings</h1></div><button class="nav" id="close-settings">Done</button></header>
-    <h2>Appearance</h2><div id="theme-options"></div>
-    <div class="masjid-heading"><h2>Your masjid</h2><button class="nav settings-control" id="mcws-default">Use MCWS · Canton</button></div>
+    <header><div><div class="settings-kicker" data-i18n="MAKE YOURSELF AT HOME">MAKE YOURSELF AT HOME</div><h1 id="settings-title" data-i18n="Launcher settings">Launcher settings</h1></div><button class="nav" id="close-settings" data-i18n="Done">Done</button></header>
+    <div class="language-row"><h2 data-i18n="Language">Language</h2><div class="language-options" role="group" aria-label="Language / اللغة"><button class="nav settings-control" data-language="en" lang="en" dir="ltr">English</button><button class="nav settings-control" data-language="ar" lang="ar" dir="rtl">العربية</button></div></div>
+    <h2 data-i18n="Appearance">Appearance</h2><div id="theme-options"></div>
+    <div class="masjid-heading"><h2 data-i18n="Your masjid">Your masjid</h2><button class="nav settings-control" id="mcws-default" data-i18n="Use MCWS · Canton">Use MCWS · Canton</button></div>
     <p id="selected-masjid"></p>
-    <div class="masjid-search"><label for="masjid-query">Find by name or city<input class="nav" id="masjid-query" type="search" maxlength="100" placeholder="At least 2 characters" autocomplete="off"></label><button class="nav settings-control" id="search-masjids">Search</button><label for="masjid-id">Or enter a Masjidal ID<input class="nav" id="masjid-id" type="text" maxlength="64" placeholder="For example, z0AWYBKj" autocomplete="off" autocapitalize="off" spellcheck="false"></label><button class="nav settings-control" id="lookup-masjid">Find by ID</button></div>
-    <p class="settings-hint">Name search finds masjids already in Royyaa. Use a Masjidal ID to add one. Times follow your selected masjid’s timezone.</p>
+    <div class="masjid-search"><label for="masjid-query"><span data-i18n="Find by name or city">Find by name or city</span><input class="nav" id="masjid-query" type="search" maxlength="100" placeholder="At least 2 characters" data-i18n-placeholder="At least 2 characters" autocomplete="off" dir="auto"></label><button class="nav settings-control" id="search-masjids" data-i18n="Search">Search</button><label for="masjid-id"><span data-i18n="Or enter a Masjidal ID">Or enter a Masjidal ID</span><input class="nav" id="masjid-id" type="text" maxlength="64" placeholder="For example, z0AWYBKj" data-i18n-placeholder="For example, z0AWYBKj" autocomplete="off" autocapitalize="off" spellcheck="false" dir="ltr"></label><button class="nav settings-control" id="lookup-masjid" data-i18n="Find by ID">Find by ID</button></div>
+    <p class="settings-hint" data-i18n="Name search finds masjids already in Royyaa. Use a Masjidal ID to add one. Times follow your selected masjid’s timezone.">Name search finds masjids already in Royyaa. Use a Masjidal ID to add one. Times follow your selected masjid’s timezone.</p>
     <div id="masjid-search-status" role="status" aria-live="polite"></div><div id="masjid-results"></div>
-    <div class="settings-bottom"><span>Masjid search and selectable timetables provided by Royyaa</span><button class="nav settings-control" id="device-settings">Fire TV settings</button></div>
+    <div class="settings-bottom"><span data-i18n="Masjid search and selectable timetables provided by Royyaa">Masjid search and selectable timetables provided by Royyaa</span><button class="nav settings-control" id="device-settings" data-i18n="Fire TV settings">Fire TV settings</button></div>
 </section>
 <div id="notice" role="status" hidden></div>
 <script src="prayer-data.js"></script>
+<script src="i18n.js"></script>
 <script src="launcher-settings.js"></script>
 <script src="home.js"></script>
 </body>

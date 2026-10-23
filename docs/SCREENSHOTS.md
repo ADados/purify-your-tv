@@ -20,4 +20,10 @@ These are 1920×1080 **browser-rendered UI demonstrations** of the checked-in ap
 ## Launcher settings
 ![Theme choices and masjid search](screenshots/settings.png)
 
+## Arabic dashboard
+![Arabic prayer dashboard with right-to-left layout](screenshots/arabic-dashboard.png)
+
+## Arabic settings
+![Arabic settings with English and Arabic language choices](screenshots/arabic-settings.png)
+
 Actual screenshots can be taken locally with `python3 tools/tv.py --device <TV_IP>:5555 screenshot shots/dashboard.png`. Never commit an unreviewed screenshot containing accounts, network details, personal names, locations or device identifiers.

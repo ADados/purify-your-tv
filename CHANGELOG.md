@@ -1,5 +1,13 @@
 # Change history
 
+## 1.3.0 (unreleased)
+
+- Added Settings → Language with English and العربية, saved independently of themes and masjid choices.
+- Added Arabic dashboard/settings/prayer labels, statuses, placeholders, theme names, countdowns and app-owned helper messages.
+- Added RTL layout with isolated left-to-right time/ID fields and physical-direction remote navigation.
+- Arabic date formatting remains Gregorian; prayer calculations/timezones and native Hijri estimation are unchanged.
+- Added privacy-safe Arabic dashboard/settings demo screenshots. Verified SDK build/signature and 193 temporary browser checks, including all five RTL themes, reload persistence, Arabic query forwarding, English restoration, physical-direction RTL navigation and existing Back/keyboard checks. No on-TV or physical-remote test was performed for this branch.
+
 ## 1.2.3
 
 - Back closes launcher settings or the app library, then stays on the dashboard on repeated presses.
