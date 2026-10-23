@@ -65,7 +65,7 @@ public final class MainActivity extends Activity {
                 attributes.imeOptions = (attributes.imeOptions & ~(EditorInfo.IME_MASK_ACTION
                         | EditorInfo.IME_FLAG_NAVIGATE_NEXT | EditorInfo.IME_FLAG_NAVIGATE_PREVIOUS))
                         | EditorInfo.IME_ACTION_SEARCH;
-                attributes.actionLabel = "Search";
+                attributes.actionLabel = localized("Search", "بحث");
                 attributes.actionId = EditorInfo.IME_ACTION_SEARCH;
                 return new InputConnectionWrapper(connection, false) {
                     @Override public boolean performEditorAction(int action) {
@@ -120,7 +120,8 @@ public final class MainActivity extends Activity {
     private void amazonHome() {
         HomeReturnService.pauseForAmazonHome();
         if (HomeReturnService.isConnected()) Toast.makeText(this,
-                "Amazon Home allowed for 10 minutes. Open Purify Your TV to resume the helper.", Toast.LENGTH_LONG).show();
+                localized("Amazon Home allowed for 10 minutes. Open Purify Your TV to resume the helper.",
+                        "يمكن استخدام واجهة أمازون لعشر دقائق. افتح Purify Your TV لاستئناف المساعد."), Toast.LENGTH_LONG).show();
         Intent home = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
                 .setPackage("com.amazon.tv.launcher").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try { startActivity(home); }
@@ -128,6 +129,12 @@ public final class MainActivity extends Activity {
     }
 
     public final class Bridge {
+        @JavascriptInterface public void setLanguage(String language) {
+            if ("en".equals(language) || "ar".equals(language)) {
+                getSharedPreferences("launcher-language", MODE_PRIVATE).edit().putString("language", language).apply();
+            }
+        }
+
         @JavascriptInterface public void dismissKeyboard() {
             runOnUiThread(() -> {
                 InputMethodManager keyboard = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -146,10 +153,14 @@ public final class MainActivity extends Activity {
                 String[] months = {"Muharram", "Safar", "Rabi al-Awwal", "Rabi al-Thani",
                         "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha’ban", "Ramadan",
                         "Shawwal", "Dhu al-Qi’dah", "Dhu al-Hijjah"};
+                if ("ar".equals(getSharedPreferences("launcher-language", MODE_PRIVATE).getString("language", "en"))) {
+                    months = new String[]{"محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة",
+                            "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"};
+                }
                 return hijri.get(ChronoField.DAY_OF_MONTH) + " "
                         + months[hijri.get(ChronoField.MONTH_OF_YEAR) - 1] + " "
-                        + hijri.get(ChronoField.YEAR_OF_ERA) + " AH";
-            } catch (RuntimeException error) { return "Hijri date unavailable"; }
+                        + hijri.get(ChronoField.YEAR_OF_ERA) + localized(" AH", " هـ");
+            } catch (RuntimeException error) { return localized("Hijri date unavailable", "التاريخ الهجري غير متاح"); }
         }
 
         @JavascriptInterface public String getApps() {
@@ -187,7 +198,7 @@ public final class MainActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_MAIN).setComponent(component)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
                 } catch (RuntimeException error) {
-                    Toast.makeText(MainActivity.this, "This app could not be opened", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, localized("This app could not be opened", "تعذر فتح هذا التطبيق"), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -198,18 +209,20 @@ public final class MainActivity extends Activity {
             runOnUiThread(() -> {
                 boolean active = HomeReturnService.isConnected();
                 new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Home-button helper")
+                        .setTitle(localized("Home-button helper", "مساعد زر الرئيسية"))
                         .setMessage(active
-                                ? "Home opens your prayer dashboard. Amazon Settings remains accessible. Turn this helper off to restore Amazon Home normally."
-                                : "The helper is not connected. You can enable Purify Your TV button helper in Accessibility settings.")
-                        .setPositiveButton(active ? "Turn off" : "Accessibility settings", (dialog, which) -> {
+                                ? localized("Home opens your prayer dashboard. Amazon Settings remains accessible. Turn this helper off to restore Amazon Home normally.",
+                                        "زر الرئيسية يفتح مواقيت الصلاة. تظل إعدادات أمازون متاحة. أوقف المساعد للعودة إلى واجهة أمازون المعتادة.")
+                                : localized("The helper is not connected. You can enable Purify Your TV button helper in Accessibility settings.",
+                                        "المساعد غير متصل. يمكنك تفعيل مساعد Purify Your TV من إعدادات تسهيل الاستخدام."))
+                        .setPositiveButton(active ? localized("Turn off", "إيقاف") : localized("Accessibility settings", "إعدادات تسهيل الاستخدام"), (dialog, which) -> {
                             if (active) HomeReturnService.turnOff();
                             else {
                                 try { startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)); }
                                 catch (RuntimeException error) { amazonHome(); }
                             }
                         })
-                        .setNegativeButton("Cancel", null).show();
+                        .setNegativeButton(localized("Cancel", "إلغاء"), null).show();
             });
         }
 
@@ -279,6 +292,10 @@ public final class MainActivity extends Activity {
                 requestRoyyaa(requestId, "/" + masjidalId + "/prayer-times?date=" + date + "&days=7");
             } catch (RuntimeException error) { sendRoyyaa(requestId, null, "Invalid masjid or date."); }
         }
+    }
+
+    private String localized(String english, String arabic) {
+        return "ar".equals(getSharedPreferences("launcher-language", MODE_PRIVATE).getString("language", "en")) ? arabic : english;
     }
 
     private void sendRoyyaa(int requestId, JSONObject data, String error) {

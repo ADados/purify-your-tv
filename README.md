@@ -6,7 +6,7 @@
 
 Five themes. Clear prayer and Iqamah times. A remote-friendly app library. No sponsored rows in this dashboard. No root and no disabling Amazon's launcher.
 
-This repository contains the complete source for **v1.2.3**. The launcher uses internet access for mosque timetables. It does not include debloating lists or automatically remove any apps.
+This branch contains the complete source for **v1.3.0 (unreleased)**. The launcher uses internet access for mosque timetables. It does not include debloating lists or automatically remove any apps.
 
 > **Tested device:** Fire TV Stick 4K Max, 2nd generation (AFTKRT), Android 11 / Fire OS 8.1.8.5. Other Fire OS versions, Android TV and Google TV need separate testing. Samsung Tizen and LG webOS cannot install this Android app.
 
@@ -18,6 +18,7 @@ This repository contains the complete source for **v1.2.3**. The launcher uses i
 | Next Iqamah | Countdown, highlighted prayer and Friday Jumuah sessions. Published tomorrow times are used when available. |
 | Choose your masjid | Search Royyaa by name/city or look up a Masjidal ID. The clock and prayer times follow that masjid's timezone. |
 | Five saved themes | Teal & Gold, Midnight & Mint, Sand & Olive, Obsidian & Gold, Twilight. |
+| English / العربية | Choose your language in Settings. Arabic uses a right-to-left interface; the choice is saved. |
 | Your apps | Six shortcuts plus the full launchable-app library. The installed apps remain untouched. |
 | Home-button helper | Optional Fire OS accessibility workaround; Amazon stays the system Home handler. A short Amazon flash can occur. |
 | Back stays home | Back closes settings/library, then stays on the dashboard. Use the explicit **Amazon Home** button to leave. |
@@ -51,7 +52,7 @@ Screenshots are **browser-rendered demonstrations with example times and a ficti
 
    Replace `<TV_IP>`; do not paste the angle brackets into a shell. Backups are saved locally before installation. Windows users can use `python` instead of `python3` and follow the [Gradle build instructions](docs/BUILD.md).
 
-5. In the launcher, open **Settings** to choose a theme and masjid. The initial defaults are **MCWS, Canton, Michigan** and **Teal & Gold**; they are not based on your location.
+5. In the launcher, open **Settings** to choose a language, theme and masjid. The initial defaults are **English**, **MCWS, Canton, Michigan** and **Teal & Gold**; they are not based on your location.
 6. If desired, follow [HOME BUTTON](docs/HOME_BUTTON.md) to enable the optional helper. Installation alone does **not** enable it or change the system Home role.
 7. Test the **physical remote**, then disable network/USB debugging and revoke authorizations. The installed app and helper do not need a computer or ADB to run.
 

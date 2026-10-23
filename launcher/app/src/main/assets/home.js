@@ -15,11 +15,15 @@
     var preferred = ['com.amazon.firetv.youtube', 'com.amazon.firebat', 'net.mbc.shahidTV',
         'com.apple.atve.amazon.appletv', 'com.netflix.ninja', 'com.hulu.plus'];
 
-    function put(id, text) { document.getElementById(id).textContent = text; }
+    function put(id, text) {
+        var element = document.getElementById(id);
+        if (id === 'masjid-badge') element.textContent = text;
+        else I18n.set(element, text);
+    }
     function tidy(text) { return text ? text.replace(/^0/, '') : '—'; }
     function notice(text) {
         var element = document.getElementById('notice');
-        element.textContent = text;
+        I18n.set(element, text);
         element.hidden = false;
         setTimeout(function () { element.hidden = true; }, 4000);
     }
@@ -35,9 +39,9 @@
         var clockElement = document.getElementById('clock');
         clockElement.textContent = clockParts[0];
         var period = document.createElement('small');
-        period.textContent = clockParts.slice(1).join(' ');
+        period.textContent = I18n.time(clockParts.slice(1).join(' '));
         clockElement.appendChild(period);
-        put('date', new Intl.DateTimeFormat('en-US', {timeZone: PrayerData.zone, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}).format(now));
+        put('date', new Intl.DateTimeFormat(I18n.locale(), {timeZone: PrayerData.zone, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}).format(now));
         var maghrib = valid && snapshot.prayers[4];
         var local = PrayerData.parts(now);
         var afterMaghrib = !!(maghrib && local.hour * 60 + local.minute >= PrayerData.minutes(maghrib.begins));
@@ -51,7 +55,7 @@
             var seconds = Math.max(0, Math.ceil((next.timestamp - now.getTime()) / 1000));
             var hours = Math.floor(seconds / 3600);
             put('iqamah-name', next.name);
-            put('iqamah-time', tidy(next.time));
+            put('iqamah-time', I18n.time(tidy(next.time)));
             put('iqamah-countdown', (next.day && next.day !== PrayerData.dateKey(now) ? 'Tomorrow · in ' : 'In ') + (hours ? hours + 'h ' : '') + Math.floor(seconds % 3600 / 60) + 'm ' + String(seconds % 60).padStart(2, '0') + 's');
         } else {
             put('iqamah-name', 'Prayer times');
@@ -64,7 +68,7 @@
             : (adhan ? 'Next prayer begins · ' + adhan.name + (adhan.day && adhan.day !== PrayerData.dateKey(now) ? ' tomorrow' : '') + ' at ' + tidy(adhan.time) : selected.name));
         put('source-status', valid ? (offline ? 'Saved timetable · ' + snapshot.date + ' · offline' : selected.name + ' · ' + snapshot.date)
             : (loading ? 'Loading ' + selected.name + '…' : 'No current timetable · ' + selected.name));
-        var nextSignature = JSON.stringify([valid && snapshot.prayers, valid && snapshot.friday, friday, next && next.key, next && next.day]);
+        var nextSignature = JSON.stringify([I18n.language(), valid && snapshot.prayers, valid && snapshot.friday, friday, next && next.key, next && next.day]);
         if (signature === nextSignature) return;
         signature = nextSignature;
         var container = document.getElementById('prayer-cells');
@@ -80,12 +84,12 @@
             [['prayer-marker', todayNext && next.key === key ? 'NEXT IQAMAH' : ''], ['prayer-name', isJumuah ? 'Jumuah' : PrayerData.names[index]], ['prayer-time-label', key === 'sunrise' ? 'SUN RISES' : (isJumuah ? 'DHUHR BEGINS' : 'PRAYER BEGINS')], ['prayer-begins', tidy(prayer && prayer.begins)], ['iqamah-label', key === 'sunrise' ? 'NO IQAMAH' : (isJumuah ? 'JUMUAH SESSIONS' : 'IQAMAH')], ['prayer-iqamah', key === 'sunrise' ? '' : (isJumuah ? snapshot.friday.map(tidy).join(' / ') : tidy(prayer && prayer.iqamah))]].forEach(function (field) {
                 var element = document.createElement('div');
                 element.className = field[0];
-                element.textContent = field[1];
+                I18n.set(element, I18n.time(field[1]));
                 if (field[0] === 'prayer-iqamah' && isJumuah) {
                     element.textContent = '';
                     snapshot.friday.forEach(function (session) {
                         var item = document.createElement('span');
-                        item.textContent = tidy(session);
+                        item.textContent = I18n.time(tidy(session));
                         element.appendChild(item);
                     });
                 }
@@ -250,6 +254,7 @@
         } catch (error) {}
     }
     window.onMasjidChanged = function () { loadSelection(); render(); refresh(); };
+    window.addEventListener('languagechange', render);
     loadSelection();
     apps();
     render();

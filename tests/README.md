@@ -21,6 +21,8 @@ This repository currently provides a **manual reproduction checklist**, not a co
 
 ## Interface
 
+- Language: English is the default; select العربية, verify RTL and translated labels/statuses, reload, then return to English and verify LTR. Neither switch may change the selected masjid, timezone, cached times, theme or Home-helper state.
+- Check all five themes in Arabic, both Friday sessions, Gregorian date year, Latin time/ID isolation, visible remote focus, unchanged Arabic query forwarding and translated empty/error responses. System keyboard languages are separate device settings.
 - All five themes: no clipped text at 1920×1080, visible focus and separate begins/Iqamah labels.
 - Theme and masjid survive an app restart/update without clearing data.
 - Name/city and ID keyboard Search dismiss the keyboard and return focus to visible controls/results.
